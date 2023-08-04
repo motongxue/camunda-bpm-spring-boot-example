@@ -10,5 +10,6 @@ public class RelLeaveHandlerDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private LeaveDTO leaveDTO;
+    // 审批人
     private String handler;
 }

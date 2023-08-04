@@ -1,28 +1,20 @@
 package com.example.leave.controller;
 
 
-import static com.example.leave.FlowConstants.PROCESS_KEY;
-
-import java.util.List;
-import java.util.Objects;
-
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.leave.ApprovalDTO;
 import com.example.leave.LeaveDTO;
 import com.example.leave.db.ApprovalDB;
 import com.example.leave.db.LeaveDB;
 import com.example.leave.db.UserDB;
-
 import lombok.RequiredArgsConstructor;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.TaskService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
+
+import static com.example.leave.FlowConstants.PROCESS_KEY;
 
 @RestController
 @RequestMapping("leave")
@@ -52,9 +44,10 @@ public class LeaveController {
      */
     @PostMapping("apply")
     public void apply(@RequestBody LeaveDTO dto) {
-        //validate data
+        // 保存请假申请信息到数据库中(实际上利用Collection保存在内存中)
         LeaveDTO leaveDTO = leaveDB.insert(dto);
         Objects.requireNonNull(leaveDTO);
+        // 启动流程实例，触发CreateTaskListener监听器
         runtimeService.startProcessInstanceByKey(PROCESS_KEY, leaveDTO.getSeqNo());
     }
 
@@ -92,6 +85,7 @@ public class LeaveController {
                 .processInstanceBusinessKey(dto.getSeqNo())
                 .singleResult()
                 .getId();
+        // 任务完成时，会触发CompleteTaskListener监听器
         taskService.complete(taskId);
     }
 }

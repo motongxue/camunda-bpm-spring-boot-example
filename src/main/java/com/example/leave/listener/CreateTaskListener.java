@@ -30,6 +30,7 @@ public class CreateTaskListener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         String taskDefinitionKey = delegateTask.getTaskDefinitionKey();
+        // 获取LeaveDTO对象
         Map<String, Object> variables = delegateTask.getExecution().getVariables();
         String assignee;
         // 判断当前任务的key是归属于哪个角色
@@ -46,7 +47,7 @@ public class CreateTaskListener implements TaskListener {
         // 设置任务的执行人
         delegateTask.setAssignee(assignee);
         LeaveDTO leaveDTO = objectMapper.convertValue(variables, LeaveDTO.class);
-        //
+        // 保存任务的执行人
         userDB.saveRelLeaveHandler(assignee, leaveDTO);
     }
 

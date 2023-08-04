@@ -36,6 +36,7 @@ public class UserDB {
         return USER_GM;
     }
 
+    // 保存任务的执行人
     public void saveRelLeaveHandler(String handler, LeaveDTO leaveDTO) {
         RelLeaveHandlerDTO dto = new RelLeaveHandlerDTO();
         dto.setHandler(handler);
@@ -43,6 +44,7 @@ public class UserDB {
         data.add(dto);
     }
 
+    // 删除任务的执行人
     public void delRelLeaveHandler(String handler, String seqNo) {
         data.removeAll(
                 data.stream().filter(d -> Objects.equals(d.getHandler(), handler) && Objects.equals(d.getLeaveDTO().getSeqNo(), seqNo))
@@ -51,7 +53,7 @@ public class UserDB {
 
     }
 
-
+    // 审批人查看自己的审批任务列表
     public List<LeaveDTO> getUserTasks(String user) {
         return data.stream().filter(rel -> Objects.equals(rel.getHandler(), user))
                 .map(RelLeaveHandlerDTO::getLeaveDTO)

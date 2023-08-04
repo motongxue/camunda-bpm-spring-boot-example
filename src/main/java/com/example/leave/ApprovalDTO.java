@@ -27,7 +27,7 @@ public class ApprovalDTO implements Serializable {
     private Integer status;
 
     /**
-     * 审批人
+     * 审批人意见
      */
     private String remark;
 }

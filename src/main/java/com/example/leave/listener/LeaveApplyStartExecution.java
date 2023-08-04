@@ -14,7 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 /**
- *
+ * camunda中填写请假中使用代理表达式，并绑定该类名，
+ * 实现JavaDelegate接口，成为一个监听器
  */
 @Component
 @RequiredArgsConstructor
